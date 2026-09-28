@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAREPLAN</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --bg-color: #f8fafc;
+            --panel-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius: 16px;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            animation: fadeInDown 0.8s ease;
+            letter-spacing: -1px;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-md);
+            animation: fadeInUp 0.8s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .panel:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1.5px solid var(--border-color);
+            background: #f8fafc;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn-success { background: #10b981; }
+        .btn-success:hover { background: #059669; box-shadow: 0 6px 15px rgba(16, 185, 129, 0.25); }
+        
+        .btn-danger { background: #ef4444; }
+        .btn-danger:hover { background: #dc2626; box-shadow: 0 6px 15px rgba(239, 68, 68, 0.25); }
+
+        .btn-secondary { background: #64748b; }
+        .btn-secondary:hover { background: #475569; }
+
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+        }
+
+        .data-table th {
+            background: #f1f5f9;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 16px;
+            text-align: left;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .data-table th:first-child { border-top-left-radius: 10px; }
+        .data-table th:last-child { border-top-right-radius: 10px; }
+
+        .data-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #f1f5f9;
+            color: var(--text-main);
+            vertical-align: middle;
+        }
+
+        .data-table tr:last-child td { border-bottom: none; }
+        
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge.EXPECTED { background: #fef9c3; color: #a16207; border: 1px solid #fde047; }
+        .badge.TAKEN { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+        .badge.MISSED { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+        .badge.OVERDUE { background: #ffedd5; color: #c2410c; border: 1px solid #fdba74; }
+
+        .btn-loading {
+            position: relative;
+            color: transparent !important;
+            pointer-events: none;
+        }
+        .btn-loading::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s infinite linear;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .status-msg {
+            margin-top: 15px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+            animation: popIn 0.3s ease-out;
+        }
+        .status-success {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #86efac;
+            display: block;
+        }
+        .status-error {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fca5a5;
+            display: block;
+        }
+        
+        .alert-banner {
+            display: none;
+            background-color: #fef2f2;
+            border-left: 6px solid #ef4444;
+            color: #991b1b;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            animation: fadeInDown 0.5s ease;
+        }
+        .alert-banner strong { font-weight: 700; font-size: 1.1rem; display: block; margin-bottom: 5px; }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 30px;">
+            <img src="/logo.jpg" alt="CAREPLAN Logo" style="height: 60px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);" />
+            <h1 style="margin: 0;">CAREPLAN</h1>
+        </div>
+        
+        <!-- Overdue Alert Banner -->
+        <div id="overdueAlertBanner" class="alert-banner">
+            <strong>⚠️ Critical Alert: Overdue Medication</strong>
+            <span id="overdueAlertText">One or more doses are overdue by more than 1 hour. Please address immediately.</span>
+        </div>
+        
+        <div class="grid">
+            <!-- Add Patient -->
+            <div class="panel">
+                <h2>1. Register Patient</h2>
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="patientName" placeholder="e.g. John Doe" />
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="patientEmail" placeholder="e.g. john@example.com" />
+                </div>
+                <button id="btnPatient" onclick="addPatient()">Register Patient</button>
+                <div id="patientResult" class="status-msg"></div>
+
+                <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 25px 0;" />
+                
+                <h3 id="patientDirTitle" style="font-size: 1.1rem; margin-top: 0;">Registered Patients Directory</h3>
+                <button id="btnListPatients" class="btn-secondary" onclick="listPatients()">View All Patients</button>
+                
+                <table class="data-table" id="patientsTable" style="display:none; font-size: 0.9rem;">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody id="patientsTableBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Add Medicine -->
+            <div class="panel">
+                <h2>2. Add Medicine Schedule</h2>
+                <div class="form-group">
+                    <label>Patient ID</label>
+                    <input type="number" id="medPatientId" placeholder="e.g. 1" />
+                </div>
+                <div class="form-group">
+                    <label>Medicine Name</label>
+                    <input type="text" id="medName" placeholder="e.g. Aspirin" />
+                </div>
+                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>Dosage</label>
+                        <input type="text" id="medDosage" placeholder="e.g. 10mg" />
+                    </div>
+                    <div class="form-group">
+                        <label>Frequency</label>
+                        <select id="medFrequency">
+                            <option value="DAILY">Daily</option>
+                            <option value="TWICE_DAILY">Twice Daily</option>
+                            <option value="THREE_TIMES_DAILY">Three Times Daily</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Timings (Comma separated)</label>
+                    <input type="text" id="medTimings" placeholder="e.g. 08:00, 14:00, 20:00" />
+                </div>
+                <button id="btnMedicine" onclick="addMedicine()">Add Schedule</button>
+                <div id="medResult" class="status-msg"></div>
+            </div>
+        </div>
+
+        <!-- Today's Doses -->
+        <div class="panel" style="margin-top: 10px;">
+            <h2>3. Today's Expected Doses</h2>
+            <p style="color: var(--text-muted); margin-top: -15px; margin-bottom: 25px;">Track daily schedules and log medicine intake.</p>
+            
+            <div style="display: flex; gap: 15px; align-items: flex-end; margin-bottom: 20px; background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid var(--border-color);">
+                <div class="form-group" style="margin: 0; flex-grow: 1; max-width: 300px;">
+                    <label>Patient ID Lookup</label>
+                    <input type="number" id="queryPatientId" placeholder="Enter Patient ID" />
+                </div>
+                <button id="btnFetchDoses" onclick="fetchDoses()" style="max-width:180px; margin:0;">Fetch Today</button>
+            </div>
+            
+            <div id="patientInfoTitle" style="margin-bottom: 15px; font-weight: bold; font-size: 1.1rem; color: var(--text-main); display: none;"></div>
+
+            <div style="overflow-x: auto; border: 1px solid var(--border-color); border-radius: 12px;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Medicine</th>
+                            <th>Dosage</th>
+                            <th>Scheduled For</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dosesTableBody">
+                        <tr>
+                            <td colspan="6" style="text-align:center; padding: 40px; color: var(--text-muted);">
+                                No scheduled doses loaded yet. <br>Enter a Patient ID above to view records.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Missed Doses History -->
+        <div class="panel" style="margin-top: 10px;">
+            <h2>4. Missed-Dose History</h2>
+            <p style="color: var(--text-muted); margin-top: -15px; margin-bottom: 25px;">View doses that were marked as missed over a date range.</p>
+            
+            <div style="display: flex; gap: 15px; align-items: flex-end; margin-bottom: 20px; background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); flex-wrap: wrap;">
+                <div class="form-group" style="margin: 0; max-width: 150px;">
+                    <label>Patient ID</label>
+                    <input type="number" id="missedPatientId" placeholder="ID" />
+                </div>
+                <div class="form-group" style="margin: 0; max-width: 200px;">
+                    <label>Start Date</label>
+                    <input type="date" id="missedStartDate" />
+                </div>
+                <div class="form-group" style="margin: 0; max-width: 200px;">
+                    <label>End Date</label>
+                    <input type="date" id="missedEndDate" />
+                </div>
+                <button id="btnFetchHistory" onclick="fetchMissedHistory()" class="btn-secondary" style="max-width:180px; margin:0;">Fetch History</button>
+            </div>
+            
+            <div style="overflow-x: auto; border: 1px solid var(--border-color); border-radius: 12px;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Log ID</th>
+                            <th>Medicine</th>
+                            <th>Scheduled Date</th>
+                            <th>Logged At</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="missedTableBody">
+                        <tr>
+                            <td colspan="5" style="text-align:center; padding: 40px; color: var(--text-muted);">
+                                Enter details above to fetch missed dose history.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = "http://localhost:8081/api";
+
+        function showStatus(elementId, message, isError = false, persist = false) {
+            const el = document.getElementById(elementId);
+            el.style.display = 'block'; // Force display to block, overriding any old inline styles
+            el.className = 'status-msg ' + (isError ? 'status-error' : 'status-success');
+            el.innerText = message;
+            
+            // Clear any existing timeouts to prevent old timers from hiding new messages
+            if (el.dataset.timeoutId) clearTimeout(parseInt(el.dataset.timeoutId));
+            
+            if (!persist) {
+                const tid = setTimeout(() => { el.style.display = 'none'; el.className = 'status-msg'; }, 5000);
+                el.dataset.timeoutId = tid;
+            }
+        }
+        
+        function setLoading(btnId, isLoading) {
+            const btn = document.getElementById(btnId);
+            if(isLoading) {
+                btn.classList.add('btn-loading');
+            } else {
+                btn.classList.remove('btn-loading');
+            }
+        }
+
+        async function addPatient() {
+            const name = document.getElementById('patientName').value;
+            const email = document.getElementById('patientEmail').value;
+            if(!name) return showStatus('patientResult', 'Please enter a patient name.', true);
+            
+            setLoading('btnPatient', true);
+            try {
+                const res = await fetch(`${API_BASE}/patients`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email })
+                });
+                const data = await res.json();
+                
+                if (res.ok) {
+                    showStatus('patientResult', `✅ Success! Patient registered with ID: ${data.id}`, false, true);
+                    document.getElementById('patientName').value = '';
+                    document.getElementById('patientEmail').value = '';
+                    
+                    // Always show the directory when a new patient is added so they know it worked
+                    listPatients();
+                } else {
+                    showStatus('patientResult', "Error: " + (data.message || "Failed to add patient"), true);
+                }
+            } catch (err) {
+                showStatus('patientResult', 'Failed to connect to server.', true);
+            } finally {
+                setLoading('btnPatient', false);
+            }
+        }
+
+        async function listPatients() {
+            setLoading('btnListPatients', true);
+            try {
+                const res = await fetch(`${API_BASE}/patients`);
+                const data = await res.json();
+                
+                if (res.ok) {
+                    const tbody = document.getElementById('patientsTableBody');
+                    tbody.innerHTML = '';
+                    
+                    // Update the title to show the count
+                    document.getElementById('patientDirTitle').innerHTML = `Registered Patients Directory <span style="background: #2563eb; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; margin-left: 10px;">Total: ${data.length}</span>`;
+                    
+                    if (data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">No patients registered yet.</td></tr>';
+                    } else {
+                        data.forEach(p => {
+                            tbody.innerHTML += `
+                                <tr>
+                                    <td style="font-weight: 700;">#${p.id}</td>
+                                    <td>${p.name}</td>
+                                    <td>${p.email || '-'}</td>
+                                </tr>
+                            `;
+                        });
+                    }
+                    document.getElementById('patientsTable').style.display = 'table';
+                }
+            } catch (err) {
+                alert('Failed to load patients.');
+            } finally {
+                setLoading('btnListPatients', false);
+            }
+        }
+
+        async function addMedicine() {
+            const patientId = document.getElementById('medPatientId').value;
+            const name = document.getElementById('medName').value;
+            const dosage = document.getElementById('medDosage').value;
+            const frequency = document.getElementById('medFrequency').value;
+            const timingsRaw = document.getElementById('medTimings').value;
+            
+            if(!patientId || !name || !dosage || !timingsRaw) {
+                return showStatus('medResult', 'Please fill all medicine fields.', true);
+            }
+            
+            const timings = timingsRaw.split(',').map(t => t.trim());
+            setLoading('btnMedicine', true);
+            
+            try {
+                const res = await fetch(`${API_BASE}/medicines`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ patientId, name, dosage, frequency, timings })
+                });
+                
+                if(res.ok) {
+                    showStatus('medResult', `Medicine schedule added successfully!`);
+                    document.getElementById('medName').value = '';
+                    document.getElementById('medDosage').value = '';
+                    document.getElementById('medTimings').value = '';
+                } else {
+                    const err = await res.json();
+                    showStatus('medResult', "Error: " + (err.message || "Failed to add medicine"), true);
+                }
+            } catch (err) {
+                showStatus('medResult', 'Failed to connect to server.', true);
+            } finally {
+                setLoading('btnMedicine', false);
+            }
+        }
+
+        async function fetchDoses() {
+            const patientId = document.getElementById('queryPatientId').value;
+            if(!patientId) return alert('Please enter a Patient ID.');
+            
+            setLoading('btnFetchDoses', true);
+            try {
+                const res = await fetch(`${API_BASE}/doses/today/patient/${patientId}`);
+                const data = await res.json();
+                
+                const tbody = document.getElementById('dosesTableBody');
+                tbody.innerHTML = '';
+                
+                // Check for OVERDUE doses for the alert
+                const overdueCount = Array.isArray(data) ? data.filter(d => d.status === 'OVERDUE').length : 0;
+                const alertBanner = document.getElementById('overdueAlertBanner');
+                if (overdueCount > 0) {
+                    document.getElementById('overdueAlertText').innerText = `Warning: ${overdueCount} dose(s) are overdue by more than 1 hour.`;
+                    alertBanner.style.display = 'block';
+                    alert(`URGENT: ${overdueCount} dose(s) are overdue by more than 1 hour!`); // The requested popup alert
+                } else {
+                    alertBanner.style.display = 'none';
+                }
+                
+                const patientInfo = document.getElementById('patientInfoTitle');
+                
+                if (!Array.isArray(data) || data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 40px; color: var(--text-muted);">No scheduled doses found for today.</td></tr>`;
+                    patientInfo.style.display = 'none';
+                    return;
+                }
+                
+                // Extract patient name from the first dose record
+                const patientName = data[0].patientName || 'Unknown Patient';
+                patientInfo.innerHTML = `Showing doses for: <span style="color: #2563eb; font-size: 1.2rem;">${patientName}</span>`;
+                patientInfo.style.display = 'block';
+                
+                data.forEach(dose => {
+                    const tr = document.createElement('tr');
+                    tr.style.animation = "popIn 0.3s ease-out";
+                    tr.innerHTML = `
+                        <td style="font-weight:600; color:var(--text-muted);">#${dose.scheduleId}</td>
+                        <td><strong style="color:var(--text-main); font-size:1.05rem;">${dose.medicineName}</strong></td>
+                        <td>${dose.dosage}</td>
+                        <td style="font-weight:500;">${dose.scheduledTime}</td>
+                        <td><span class="badge ${dose.status}">${dose.status}</span></td>
+                        <td style="display: flex; gap: 8px;">
+                            <button class="btn-success" style="padding:8px 16px; margin:0; width:auto; font-size:0.9rem;" onclick="logDose(${dose.scheduleId}, 'TAKEN')">Take</button>
+                            <button class="btn-danger" style="padding:8px 16px; margin:0; width:auto; font-size:0.9rem;" onclick="logDose(${dose.scheduleId}, 'MISSED')">Miss</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (err) {
+                alert('Failed to connect to server to fetch doses.');
+            } finally {
+                setLoading('btnFetchDoses', false);
+            }
+        }
+        
+        async function logDose(scheduleId, status) {
+            const scheduledDate = new Date().toISOString().split('T')[0]; 
+            
+            try {
+                const res = await fetch(`${API_BASE}/doses/log`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ scheduleId, scheduledDate, status })
+                });
+                
+                if(res.ok) {
+                    fetchDoses(); // refresh to show updated status
+                } else {
+                    const err = await res.json();
+                    alert("Validation Error: " + err.message);
+                }
+            } catch (err) {
+                alert('Failed to log dose.');
+            }
+        }
+
+        async function fetchMissedHistory() {
+            const patientId = document.getElementById('missedPatientId').value;
+            const startDate = document.getElementById('missedStartDate').value;
+            const endDate = document.getElementById('missedEndDate').value;
+
+            if(!patientId || !startDate || !endDate) return alert('Please enter Patient ID, Start Date, and End Date.');
+
+            setLoading('btnFetchHistory', true);
+            try {
+                const res = await fetch(`${API_BASE}/doses/missed/patient/${patientId}?startDate=${startDate}&endDate=${endDate}`);
+                const data = await res.json();
+
+                const tbody = document.getElementById('missedTableBody');
+                tbody.innerHTML = '';
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 40px; color: var(--text-muted);">No missed doses found in this date range.</td></tr>`;
+                    return;
+                }
+
+                data.forEach(log => {
+                    const loggedAtClean = new Date(log.loggedAt).toLocaleString();
+                    const tr = document.createElement('tr');
+                    tr.style.animation = "popIn 0.3s ease-out";
+                    tr.innerHTML = `
+                        <td style="font-weight:600; color:var(--text-muted);">#${log.id}</td>
+                        <td><strong style="color:var(--text-main);">${log.medicineName}</strong></td>
+                        <td>${log.scheduledDate}</td>
+                        <td style="font-weight:500;">${loggedAtClean}</td>
+                        <td><span class="badge ${log.status}">${log.status}</span></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch(err) {
+                alert('Failed to connect to server to fetch history.');
+            } finally {
+                setLoading('btnFetchHistory', false);
+            }
+        }
+    </script>
+</body>
+</html>
